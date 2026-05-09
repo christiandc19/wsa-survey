@@ -2,9 +2,9 @@ const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_AP
   ? import.meta.env.VITE_API_URL
   : process.env.REACT_APP_API_URL;
 
-const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_CHATBOT_API_KEY)
-  ? import.meta.env.VITE_CHATBOT_API_KEY
-  : process.env.REACT_APP_CHATBOT_API_KEY;
+const API_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SURVEY_API_KEY)
+  ? import.meta.env.VITE_SURVEY_API_KEY
+  : process.env.REACT_APP_SURVEY_API_KEY;
 
 const authHeaders = {
   "Content-Type": "application/json",

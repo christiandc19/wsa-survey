@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import QuestionScreen from "./components/QuestionScreen";
 import ResultScreen from "./components/ResultScreen";
 import SurveyLanding from "./components/SurveyLanding";
 import LeadCaptureScreen from "./components/LeadCaptureScreen";
