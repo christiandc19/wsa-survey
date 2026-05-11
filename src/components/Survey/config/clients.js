@@ -1,9 +1,9 @@
-import evergreenHeights from "./clients/evergreenHeightsClient";
+import evergreenHeightsClient from "./clients/evergreenHeightsClient";
 
 export const clients = {
-  "evergreen-heights": evergreenHeights,
+  "evergreen-heights": evergreenHeightsClient,
 };
 
 export function getSurveyClient(clientKey) {
-  return clients[clientKey] || clients["evergreen-heights"];
+  return clients[clientKey];
 }

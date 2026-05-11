@@ -20,7 +20,7 @@ export default function Survey() {
   const location = useLocation();
   const { clientKey, surveyKey } = useParams();
 
-  const resolvedClientKey = clientKey || "robin-run";
+  const resolvedClientKey = clientKey || "evergreen-heights";  
   const resolvedSurveyKey = surveyKey || "senior-living";
 
   const survey = getSurvey(resolvedSurveyKey);

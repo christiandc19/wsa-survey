@@ -5,8 +5,8 @@ const evergreenHeightsClient = {
 
   clientName: "Evergreen Heights Senior Living",
 
-  logoUrl:
-    "https://cdn.websmartassistant.com/clients/evergreen-heights/logo.png",
+logoUrl:
+  "https://web-smart-assistant.s3.us-west-1.amazonaws.com/clients/evergreen-heights/evergreen-heights.png",
 
   headerTitle: "Chat with Evergreen Heights",
   headerSubtitle: "Guidance for your next chapter",
@@ -37,6 +37,8 @@ const evergreenHeightsClient = {
   },
 
   survey: {
+    enabled: true,
+
     landing: {
       kicker: "FREE ASSESSMENT",
       title: "Find the Right Senior Living Option",
@@ -54,16 +56,19 @@ const evergreenHeightsClient = {
     branding: {
       heroImages: {
         "senior-living":
-          "https://cdn.websmartassistant.com/clients/evergreen-heights/senior-living.jpg",
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/senior-living-survey-hero.webp",
 
         downsizing:
-          "https://cdn.websmartassistant.com/clients/evergreen-heights/downsizing.jpg",
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/downsizing-survey-hero.webp",
 
         "memory-support":
-          "https://cdn.websmartassistant.com/clients/evergreen-heights/memory-support.jpg",
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/memory-support-survey-hero.webp",
 
         affordability:
-          "https://cdn.websmartassistant.com/clients/evergreen-heights/affordability.jpg",
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/affordability-survey-hero.webp",
+
+        "care-needs":
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/care-needs-survey-hero.webp",
       },
     },
   },

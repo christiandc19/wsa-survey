@@ -10,8 +10,8 @@ export default function ToolsHome() {
 
         <div className="tools-home-content">
           <img
-            src="/images/clients/robin-run/robin-run-logo.webp"
-            alt="WebSmartAssistant"
+            src="/images/clients/evergreen-heights/logo.png"
+            alt="Evergreen Heights"
             className="tools-home-logo"
           />
 
@@ -23,7 +23,7 @@ export default function ToolsHome() {
           </p>
 
           <Link
-            to="/assessments/robin-run/care-needs"
+            to="/assessments/evergreen-heights/care-needs"
             className="tools-home-button"
           >
             Take the Survey

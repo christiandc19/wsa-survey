@@ -7,12 +7,13 @@ export default function SurveyHub() {
 
       <ul>
         <li>
-          <Link to="/assessments/robin-run/senior-living">
+          <Link to="/assessments/evergreen-heights/senior-living">
             Senior Living Assessment
           </Link>
         </li>
+
         <li>
-          <Link to="/assessments/robin-run/care-needs">
+          <Link to="/assessments/evergreen-heights/care-needs">
             Care Needs Assessment
           </Link>
         </li>
