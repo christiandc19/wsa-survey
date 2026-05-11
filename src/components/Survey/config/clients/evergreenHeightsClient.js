@@ -62,8 +62,7 @@ logoUrl:
           "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/downsizing-survey-hero.webp",
 
         "memory-support":
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/memory-support-survey-hero.webp",
-
+          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/memory-survey-hero.webp",
         affordability:
           "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/affordability-survey-hero.webp",
 
