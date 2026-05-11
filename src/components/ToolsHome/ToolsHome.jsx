@@ -5,75 +5,90 @@ import "./ToolsHome.css";
 export default function ToolsHome() {
   return (
     <main className="tools-home">
+      {/* Left hero section */}
       <section className="tools-home-left">
         <div className="tools-home-overlay" />
 
         <div className="tools-home-content">
-          <img
-            src="/images/clients/evergreen-heights/logo.png"
-            alt="Evergreen Heights"
-            className="tools-home-logo"
-          />
+          <div className="tools-home-logo">
+            <img
+              src="https://web-smart-assistant.s3.us-west-1.amazonaws.com/clients/smart-web-assistant/logo-white.png"
+              alt="WebSmartAssistant"
+            />
+          </div>
 
-          <h1>Is it time to get help?</h1>
+            <h1>
+              Understand your audience.
+              <br />
+              <span>Make better decisions.</span>
+            </h1>
 
           <p>
-            Learn more about senior living options and which next step may be
-            the best fit.
+            Create simple senior living surveys that help families, residents,
+            and communities discover the right next step.
           </p>
 
           <Link
-            to="/assessments/evergreen-heights/care-needs"
+            to="/assessments/"
             className="tools-home-button"
           >
-            Take the Survey
+            Explore Surveys
           </Link>
         </div>
       </section>
 
+      {/* Right overview section */}
       <section className="tools-home-right">
         <div className="tools-home-info">
           <p className="tools-home-kicker">
-            Know more and be better prepared in <strong>about 4 minutes</strong>
+            Simple insights in <strong>about 4 minutes</strong>
           </p>
 
           <div className="tools-home-feature">
             <span>◎</span>
             <div>
-              <h3>The Right Care</h3>
-              <p>Find the best balance of safety, independence, and support.</p>
+              <h3>Smarter Decisions</h3>
+              <p>
+                Collect meaningful feedback from residents, families, and
+                prospects.
+              </p>
             </div>
           </div>
 
           <div className="tools-home-feature">
             <span>◷</span>
             <div>
-              <h3>At the Right Time</h3>
-              <p>Get help immediately or plan confidently for the future.</p>
+              <h3>Easy to Complete</h3>
+              <p>
+                Simple, mobile-friendly surveys designed for better engagement.
+              </p>
             </div>
           </div>
 
           <div className="tools-home-feature">
-            <span>⇄</span>
+            <span>⌂</span>
             <div>
-              <h3>In the Right Place</h3>
-              <p>Decide if staying home or senior living is the better fit.</p>
+              <h3>Built for Senior Living</h3>
+              <p>Assess care needs, lifestyle preferences, and community fit.</p>
             </div>
           </div>
 
           <div className="tools-home-feature">
-            <span>♢</span>
+            <span>▥</span>
             <div>
-              <h3>With the Right Support</h3>
-              <p>Learn how to talk with family and explore next steps.</p>
+              <h3>Actionable Results</h3>
+              <p>Turn responses into clear next steps and better conversations.</p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Bottom footer bar */}
       <footer className="tools-home-footer">
         <span>🔒 Private and Secure</span>
-        <span>Powered by WebSmartAssistant</span>
+        <span>
+          Powered by <strong>WebSmartAssistant</strong>
+        </span>
       </footer>
     </main>
   );
