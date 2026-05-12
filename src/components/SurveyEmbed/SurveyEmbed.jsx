@@ -2,54 +2,57 @@ import React from "react";
 import { getSurveyClient } from "../Survey/config/clients";
 import "./SurveyEmbed.css";
 
+// New centralized survey asset folder.
+// If this path changes later, update it in one place only.
+const SURVEY_ASSET_BASE =
+  "https://cdn.websmartassistant.com/survey-assets/hero-images";
+
 export default function SurveyEmbed({
   clientKey = "demo",
   surveyKey = "senior-living",
 }) {
-const client = getSurveyClient(clientKey);
+  const client = getSurveyClient(clientKey);
 
-const defaultContent = {
-  "senior-living": {
-    title: "Is Senior Living the Right Next Step?",
-    subtitle:
-      "Learn about your options and get personalized guidance with this quick assessment.",
-    image:
-      "https://cdn.websmartassistant.com/survey/images/senior-living-survey-hero.webp",
-    alt: "Senior living assessment",
-  },
-  downsizing: {
-    title: "Would Downsizing Make Life Easier Right Now?",
-    subtitle:
-      "Explore whether simplifying the home and daily responsibilities may be helpful.",
-    image:
-      "https://cdn.websmartassistant.com/survey/images/downsizing-survey-hero.webp",
-    alt: "Downsizing assessment",
-  },
-  "memory-support": {
-    title: "Could Memory Support Be the Right Next Step?",
-    subtitle:
-      "Answer a few quick questions to better understand whether memory support may be helpful.",
-      image:
-      "https://cdn.websmartassistant.com/survey/images/memory-survey-hero.webp",
-    alt: "Memory support assessment",
-  },
-  affordability: {
-    title: "What Could Senior Living Cost for Your Situation?",
-    subtitle:
-      "Get guidance around planning, budgeting, and comparing senior living options.",
-    image:
-    "https://cdn.websmartassistant.com/survey/images/affordability-survey-hero.webp",
-  },
-};
+  const defaultContent = {
+    "senior-living": {
+      title: "Is Senior Living the Right Next Step?",
+      subtitle:
+        "Learn about your options and get personalized guidance with this quick assessment.",
+      image: `${SURVEY_ASSET_BASE}/senior-living-survey-hero.webp`,
+      alt: "Senior living assessment",
+    },
 
+    downsizing: {
+      title: "Would Downsizing Make Life Easier Right Now?",
+      subtitle:
+        "Explore whether simplifying the home and daily responsibilities may be helpful.",
+      image: `${SURVEY_ASSET_BASE}/downsizing-survey-hero.webp`,
+      alt: "Downsizing assessment",
+    },
+
+    "memory-support": {
+      title: "Could Memory Support Be the Right Next Step?",
+      subtitle:
+        "Answer a few quick questions to better understand whether memory support may be helpful.",
+      image: `${SURVEY_ASSET_BASE}/memory-survey-hero.webp`,
+      alt: "Memory support assessment",
+    },
+
+    affordability: {
+      title: "What Could Senior Living Cost for Your Situation?",
+      subtitle:
+        "Get guidance around planning, budgeting, and comparing senior living options.",
+      image: `${SURVEY_ASSET_BASE}/affordability-survey-hero.webp`,
+      alt: "Affordability assessment",
+    },
+  };
 
   const content = defaultContent[surveyKey] || defaultContent["senior-living"];
 
-  const title =
-    client?.survey?.embed?.[surveyKey]?.title || content.title;
+  const title = client?.survey?.embed?.[surveyKey]?.title || content.title;
 
   const subtitle =
-  client?.survey?.embed?.[surveyKey]?.subtitle || content.subtitle;
+    client?.survey?.embed?.[surveyKey]?.subtitle || content.subtitle;
 
   const buttonLabel =
     client?.survey?.embed?.buttonLabel || "Start Assessment";
@@ -57,19 +60,16 @@ const defaultContent = {
   const poweredBy =
     client?.survey?.embed?.poweredBy || "Powered by WebSmartAssistant";
 
-  const primaryColor =
-    client?.survey?.branding?.primaryColor || "#2f5d50";
+  const primaryColor = client?.survey?.branding?.primaryColor || "#2f5d50";
 
   const primaryHoverColor =
     client?.survey?.branding?.primaryHoverColor || "#24483f";
 
   const surveyUrl = `https://tools.websmartassistant.com/assessments/${clientKey}/${surveyKey}`;
 
-
   return (
     <section className="wsa-survey-embed">
       <div className="wsa-survey-embed-card">
-        
         {/* LEFT CONTENT */}
         <div className="wsa-survey-embed-content">
           <span className="wsa-survey-kicker">Free Assessment</span>
@@ -96,16 +96,13 @@ const defaultContent = {
             Takes 3–5 minutes • Private & secure
           </small>
 
-          <div className="wsa-survey-embed-powered">
-            {poweredBy}
-          </div>
+          <div className="wsa-survey-embed-powered">{poweredBy}</div>
         </div>
 
         {/* RIGHT IMAGE */}
         <div className="wsa-survey-embed-image">
-            <img src={content.image} alt={content.alt} />        
+          <img src={content.image} alt={content.alt} />
         </div>
-
       </div>
     </section>
   );
