@@ -1,3 +1,8 @@
+
+
+const SURVEY_ASSET_BASE =
+"https://cdn.websmartassistant.com/survey-assets/hero-images";
+
 // src/components/Survey/config/clients/evergreenHeightsClient.js
 
 const evergreenHeightsClient = {
@@ -56,18 +61,19 @@ logoUrl:
     branding: {
       heroImages: {
         "senior-living":
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/senior-living-survey-hero.webp",
+          `${SURVEY_ASSET_BASE}/senior-living-survey-hero.webp`,
 
         downsizing:
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/downsizing-survey-hero.webp",
+          `${SURVEY_ASSET_BASE}/downsizing-survey-hero.webp`,
 
         "memory-support":
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/memory-survey-hero.webp",
+          `${SURVEY_ASSET_BASE}/memory-survey-hero.webp`,
+
         affordability:
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/affordability-survey-hero.webp",
+          `${SURVEY_ASSET_BASE}/affordability-survey-hero.webp`,
 
         "care-needs":
-          "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/care-needs-survey-hero.webp",
+          `${SURVEY_ASSET_BASE}/care-needs-survey-hero.webp`,
       },
     },
   },

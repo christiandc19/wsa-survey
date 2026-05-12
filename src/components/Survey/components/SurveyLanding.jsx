@@ -12,13 +12,16 @@ export default function SurveyLanding({
   const surveyBranding = client?.survey?.branding || {};
   const surveyLanding = client?.survey?.landing || {};
 
-  const defaultSurveyImages = {
-    "senior-living": "/images/surveys/senior-living.webp",
-    downsizing: "/images/surveys/downsizing.webp",
-    "memory-support": "/images/surveys/memory-support.webp",
-    affordability: "/images/surveys/affordability.webp",
-  };
+  const SURVEY_ASSET_BASE =
+    "https://cdn.websmartassistant.com/survey-assets/hero-images";
 
+  const defaultSurveyImages = {
+    "senior-living": `${SURVEY_ASSET_BASE}/senior-living-survey-hero.webp`,
+    downsizing: `${SURVEY_ASSET_BASE}/downsizing-survey-hero.webp`,
+    "memory-support": `${SURVEY_ASSET_BASE}/memory-survey-hero.webp`,
+    affordability: `${SURVEY_ASSET_BASE}/affordability-survey-hero.webp`,
+  };
+  
   const heroImage =
     surveyBranding.heroImages?.[surveyKey] ||
     surveyBranding.heroImage ||
