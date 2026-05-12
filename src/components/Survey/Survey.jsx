@@ -3,42 +3,45 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ResultScreen from "./components/ResultScreen";
 import SurveyLanding from "./components/SurveyLanding";
 import LeadCaptureScreen from "./components/LeadCaptureScreen";
+import SessionTimeoutModal from "./components/SessionTimeoutModal";
+import SurveyQuestionLayout from "./components/SurveyQuestionLayout";
 import { getSurveyClient } from "./config/clients";
 import { getSurvey } from "./config/surveys";
 import { getSurveyResult } from "./utils/surveyUtils";
 import { createLead } from "../../services/widgetApi";
-// NEW
-import SurveyQuestionLayout from "./components/SurveyQuestionLayout";
 import "./Survey.css";
 
 const STORAGE_PREFIX = "wsa-survey-state";
 const WARNING_TIMEOUT_MS = 8 * 60 * 1000;
 const SESSION_TIMEOUT_MS = 10 * 60 * 1000;
 
+const DEFAULT_ANSWERS = {
+  whoFor: { label: "Mom", value: "mom" },
+};
+
+const DEFAULT_LEAD = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  consent: false,
+};
+
 export default function Survey() {
   const navigate = useNavigate();
   const location = useLocation();
   const { clientKey, surveyKey } = useParams();
 
-  const resolvedClientKey = clientKey || "evergreen-heights";  
+  const resolvedClientKey = clientKey || "evergreen-heights";
   const resolvedSurveyKey = surveyKey || "senior-living";
 
   const survey = getSurvey(resolvedSurveyKey);
   const client = getSurveyClient(resolvedClientKey);
-
   const storageKey = `${STORAGE_PREFIX}-${resolvedClientKey}-${resolvedSurveyKey}`;
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState({
-    whoFor: { label: "Mom", value: "mom" },
-  });
-  const [lead, setLead] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    consent: false,
-  });
+  const [answers, setAnswers] = useState(DEFAULT_ANSWERS);
+  const [lead, setLead] = useState(DEFAULT_LEAD);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
@@ -51,7 +54,8 @@ export default function Survey() {
   const isResultsRoute = location.pathname.endsWith("/results");
   const isLandingRoute = !isStartRoute && !isResultsRoute;
   const isQuestionFlow = isStartRoute && currentIndex < totalSteps;
-  const isLeadCaptureStep = isStartRoute && currentIndex >= totalSteps && !leadSubmitted;
+  const isLeadCaptureStep =
+    isStartRoute && currentIndex >= totalSteps && !leadSubmitted;
   const isComplete = currentIndex >= totalSteps && leadSubmitted;
 
   const currentQuestion =
@@ -62,6 +66,7 @@ export default function Survey() {
     return getSurveyResult(answers, survey);
   }, [answers, survey]);
 
+  // Restores saved survey progress from localStorage.
   useEffect(() => {
     if (!survey || !client) {
       setIsHydrated(true);
@@ -81,19 +86,13 @@ export default function Survey() {
         setAnswers(
           parsed.answers && typeof parsed.answers === "object"
             ? parsed.answers
-            : { whoFor: { label: "Mom", value: "mom" } }
+            : DEFAULT_ANSWERS
         );
 
         setLead(
           parsed.lead && typeof parsed.lead === "object"
             ? parsed.lead
-            : {
-                firstName: "",
-                lastName: "",
-                email: "",
-                phone: "",
-                consent: false,
-              }
+            : DEFAULT_LEAD
         );
 
         setLeadSubmitted(!!parsed.leadSubmitted);
@@ -105,6 +104,7 @@ export default function Survey() {
     }
   }, [storageKey, survey, client]);
 
+  // Auto-saves survey progress after hydration.
   useEffect(() => {
     if (!isHydrated || !survey || !client) return;
 
@@ -121,8 +121,18 @@ export default function Survey() {
     } catch (error) {
       console.error("Failed to save survey state:", error);
     }
-  }, [currentIndex, answers, lead, leadSubmitted, isHydrated, storageKey, survey, client]);
+  }, [
+    currentIndex,
+    answers,
+    lead,
+    leadSubmitted,
+    isHydrated,
+    storageKey,
+    survey,
+    client,
+  ]);
 
+  // Keeps the route in sync with the survey completion state.
   useEffect(() => {
     if (!isHydrated || !survey) return;
 
@@ -146,6 +156,7 @@ export default function Survey() {
     survey,
   ]);
 
+  // Shows a polished inactivity warning before the survey session expires.
   useEffect(() => {
     const handleTimeout = () => {
       setShowTimeoutWarning(false);
@@ -168,7 +179,8 @@ export default function Survey() {
     };
 
     const handleActivity = () => {
-      setShowTimeoutWarning(false);
+      // Activity resets the timers, but does not automatically close the modal.
+      // The user should intentionally click "Continue Assessment".
       resetTimers();
     };
 
@@ -200,9 +212,7 @@ export default function Survey() {
 
     if (!selectedOption) return;
 
-    // NEW:
-    // Supports multi-select questions.
-    // If question.multi is true, clicking an option will toggle it on/off.
+    // Supports multi-select questions by toggling selected options on/off.
     if (question.multi) {
       setAnswers((prev) => {
         const currentAnswers = Array.isArray(prev[question.id])
@@ -260,77 +270,49 @@ export default function Survey() {
     setCurrentIndex((prev) => prev + 1);
   };
 
-    const handleLeadSubmit = async (leadData) => {
-      setLead(leadData);
+  const handleLeadSubmit = async (leadData) => {
+    setLead(leadData);
 
-      try {
-        // NEW:
-        // Send completed survey lead to the backend.
-        // This saves the contact info, survey result, score, and answers
-        // so the lead can appear in the dashboard as a Survey lead.
-        await createLead({
-          firstName: leadData.firstName,
-          lastName: leadData.lastName,
-          email: leadData.email,
-          phone: leadData.phone,
-
-          // NEW:
-          // Marks this lead as coming from a survey.
-          source: "survey",
-
-          // NEW:
-          // Stores which client and survey created this lead.
-          clientKey: resolvedClientKey,
-          formKey: resolvedSurveyKey,
-
-          // NEW:
-          // Simple summary message visible on the lead.
-          message: `Survey completed: ${result?.title || "Survey Result"}`,
-
-          // NEW:
-          // Stores survey-specific details in the Details table.
-          details: {
-            surveyKey: resolvedSurveyKey,
-            surveyResult: result?.title || "Survey Result",
-            surveyScore: result?.score || null,
-            surveyAnswersJson: JSON.stringify(answers),
-            browser: navigator.userAgent,
-            referrer: document.referrer,
+    try {
+      // Sends completed survey lead data to the backend/dashboard.
+      await createLead({
+        firstName: leadData.firstName,
+        lastName: leadData.lastName,
+        email: leadData.email,
+        phone: leadData.phone,
+        source: "survey",
+        clientKey: resolvedClientKey,
+        formKey: resolvedSurveyKey,
+        message: `Survey completed: ${result?.title || "Survey Result"}`,
+        details: {
+          surveyKey: resolvedSurveyKey,
+          surveyResult: result?.title || "Survey Result",
+          surveyScore: result?.score || null,
+          surveyAnswersJson: JSON.stringify(answers),
+          browser: navigator.userAgent,
+          referrer: document.referrer,
+        },
+        conversations: [
+          {
+            sender: "system",
+            message: `Survey completed: ${result?.title || "Survey Result"}`,
           },
+        ],
+      });
 
-          // NEW:
-          // Adds a readable conversation-style note for the lead history.
-          conversations: [
-            {
-              sender: "system",
-              message: `Survey completed: ${result?.title || "Survey Result"}`,
-            },
-          ],
-        });
-
-        setLeadSubmitted(true);
-
-        navigate(`/assessments/${resolvedClientKey}/${resolvedSurveyKey}/results`, {
-          replace: true,
-        });
-      } catch (error) {
-        console.error("Failed to submit survey lead:", error);
-        alert("Something went wrong while saving your survey. Please try again.");
-      }
-    };
-
+      setLeadSubmitted(true);
+      navigate(`/assessments/${resolvedClientKey}/${resolvedSurveyKey}/results`, {
+        replace: true,
+      });
+    } catch (error) {
+      console.error("Failed to submit survey lead:", error);
+      alert("Something went wrong while saving your survey. Please try again.");
+    }
+  };
 
   const handleRestart = () => {
-    setAnswers({
-      whoFor: { label: "Mom", value: "mom" },
-    });
-    setLead({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      consent: false,
-    });
+    setAnswers(DEFAULT_ANSWERS);
+    setLead(DEFAULT_LEAD);
     setLeadSubmitted(false);
     setCurrentIndex(0);
     localStorage.removeItem(storageKey);
@@ -359,19 +341,24 @@ export default function Survey() {
     }
   };
 
-  const timeoutWarning = showTimeoutWarning ? (
-    <div className="survey-timeout-warning">
-      <p>Still there?</p>
-      <button
-        type="button"
-        onClick={() => {
-          setShowTimeoutWarning(false);
-        }}
-      >
-        Continue
-      </button>
-    </div>
-  ) : null;
+  const handleContinueSession = () => {
+    setShowTimeoutWarning(false);
+  };
+
+  const handleExitSurvey = () => {
+    setShowTimeoutWarning(false);
+    navigate(`/assessments/${resolvedClientKey}/${resolvedSurveyKey}`, {
+      replace: true,
+    });
+  };
+
+  const timeoutModal = (
+    <SessionTimeoutModal
+      open={showTimeoutWarning}
+      onContinue={handleContinueSession}
+      onExit={handleExitSurvey}
+    />
+  );
 
   if (!survey) {
     return <div>Survey config not found for "{resolvedSurveyKey}".</div>;
@@ -392,15 +379,15 @@ export default function Survey() {
   if (isLandingRoute) {
     return (
       <>
-      {timeoutWarning}
-      <SurveyLanding
-        title={survey.landing.title}
-        subtitle={survey.landing.subtitle}
-        cta={client?.survey?.landing?.ctaLabel || survey.landing.cta}
-        onStart={handleStart}
-        client={client}
-        surveyKey={resolvedSurveyKey}
-      />
+        {timeoutModal}
+        <SurveyLanding
+          title={survey.landing.title}
+          subtitle={survey.landing.subtitle}
+          cta={client?.survey?.landing?.ctaLabel || survey.landing.cta}
+          onStart={handleStart}
+          client={client}
+          surveyKey={resolvedSurveyKey}
+        />
       </>
     );
   }
@@ -408,7 +395,7 @@ export default function Survey() {
   if (isQuestionFlow) {
     return (
       <>
-        {timeoutWarning}
+        {timeoutModal}
         <SurveyQuestionLayout
           title={client?.communityName || "Assessment"}
           subtitle={`Step ${currentIndex + 1} of ${totalSteps}`}
@@ -431,7 +418,7 @@ export default function Survey() {
             currentQuestion?.multi
               ? answers[currentQuestion?.id]?.map((answer) => answer.value) || []
               : answers[currentQuestion?.id]?.value
-          }          
+          }
           onSelect={(val) => handleAnswer(currentQuestion, val)}
           onNext={handleNext}
           onBack={handleBack}
@@ -447,7 +434,7 @@ export default function Survey() {
   if (isLeadCaptureStep) {
     return (
       <>
-        {timeoutWarning}
+        {timeoutModal}
         <LeadCaptureScreen
           client={client}
           result={result}
@@ -462,7 +449,7 @@ export default function Survey() {
   if (isResultsRoute && isComplete) {
     return (
       <div className="survey-shell">
-        {timeoutWarning}
+        {timeoutModal}
         <div className="survey-container">
           <ResultScreen
             result={result}

@@ -28,13 +28,17 @@ export default function ResultScreen({
         <p className="result-description">{result.description}</p>
 
         <div className="result-actions">
-          <button
-            type="button"
-            className="result-btn result-btn-primary"
-            onClick={onPrimaryAction}
-          >
-            {result.cta || "Keep Exploring"}
-          </button>
+          
+        <button
+          type="button"
+          className="result-secondary-button"
+          onClick={() => {
+            window.location.href =
+              "https://norwoodseniors.wpenginepowered.com/";
+          }}
+        >
+          Keep Exploring
+        </button>
 
           <button
             type="button"
