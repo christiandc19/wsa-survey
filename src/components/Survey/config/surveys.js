@@ -2,7 +2,6 @@ import { seniorLivingSurvey } from "../data/seniorLiving";
 import { downsizingSurvey } from "../data/downsizing";
 import { memorySupportSurvey } from "../data/memorySupport";
 import { affordabilitySurvey } from "../data/affordability";
-import careNeedsSurvey from "../data/careNeeds";
 
 // 🔥 ADD IT HERE (below imports, above exports or below — either is fine)
 export const surveyList = [
@@ -18,7 +17,6 @@ export const surveys = {
   downsizing: downsizingSurvey,
   "memory-support": memorySupportSurvey,
   affordability: affordabilitySurvey,
-  "care-needs": careNeedsSurvey,
 };
 
 export function getSurvey(surveyKey) {

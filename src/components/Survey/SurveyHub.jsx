@@ -9,7 +9,7 @@ const surveys = [
       "Answer a few quick questions to explore whether senior living may be a good fit.",
 
     image:
-      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/senior-living-survey-hero.webp",
+      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey-assets/hero-images/senior-living-survey-hero.webp",
 
     link: "https://websmartassistant.com/",
   },
@@ -21,7 +21,7 @@ const surveys = [
       "Explore signs, care needs, and support options for memory-related concerns.",
 
     image:
-        "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/memory-survey-hero.webp",
+        "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey-assets/hero-images/memory-survey-hero.webp",
       link: "https://websmartassistant.com/",
   },
 
@@ -32,7 +32,8 @@ const surveys = [
       "See whether simplifying the home or daily routine could reduce stress.",
 
     image:
-      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/downsizing-survey-hero.webp",
+      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey-assets/hero-images/downsizing-survey-hero.webp",
+
 
     link: "https://websmartassistant.com/",
   },
@@ -44,7 +45,7 @@ const surveys = [
       "Understand common cost factors and what may affect your planning.",
 
     image:
-      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey/images/affordability-survey-hero.webp",
+      "https://web-smart-assistant.s3.us-west-1.amazonaws.com/survey-assets/hero-images/affordability-survey-hero.webp",
 
     link: "https://websmartassistant.com/",
   },
